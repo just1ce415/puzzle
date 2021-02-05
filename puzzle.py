@@ -18,11 +18,11 @@ def check_rows(board: list) -> bool:
     True
     '''
     for line in board:
-        for i in range(1, 10):
+        for i in range(1, 9):
+            counter = 0
             # ALL THE POSSIBLE DIGITS: RANGE 1-9
-            for j in range(9):
+            for j in range(len(line)):
                 # USING COUNTER TO TRACK REPETITONS
-                counter = 0
                 if line[j].isdigit():
                     if int(line[j]) == i:
                         counter += 1
@@ -46,10 +46,10 @@ def check_colomns(board: list) -> bool:
     False
     '''
     # THE SAME AS PREVIOUS FUNC, HOWEVER, IT GOES THROUGH COLOMNS
-    for k in range(9):
-        for i in range(1, 10):
-            for j in range(9):
-                counter = 0
+    for k in range(len(board)):
+        for i in range(1, 9):
+            counter = 0
+            for j in range(len(board)):
                 if board[j][k].isdigit():
                     if int(board[j][k]) == i:
                         counter += 1
@@ -61,6 +61,8 @@ def check_colomns(board: list) -> bool:
 def check_colors(board: list) -> bool:
     '''
     Checking if there's no repititons in blocks of colors. Returns True - no repetitions.
+    However, it the result of this function may intersect with a result of others. This
+    functions just guaranties that all the rules regarding color blockes are sticked to.
     >>> check_colors(["**** ****",\
  "***1 ****",\
  "**  3****",\
@@ -70,7 +72,7 @@ def check_colors(board: list) -> bool:
  "3   1  **",\
  "  8  2***",\
  "  2  ****"])
-    True
+    False
     '''
     # CHECKING SUB-BOARDS 5X5 WITH COLOR BLOCK INVOLVED
     start_row = 4
@@ -80,7 +82,7 @@ def check_colors(board: list) -> bool:
         # FORMAING NESTED SUB-BOARD
         nest_board = board[start_row:start_row+5]
         for i in range(len(nest_board)):
-            nest_board[i] = nest_board[start_col: start_col+5]
+            nest_board[i] = str(nest_board[start_col: start_col+5])
         # WE SHOULD CHECK BOTH COLOMNS AND ROWS TO COVER THE COLOR BLOCK
         if not check_rows(nest_board) or not check_colomns(nest_board):
             return False
@@ -105,7 +107,9 @@ def validate_board(board: list) -> bool:
  "  2  ****"])
     False
     '''
-    pass
+    if check_colomns(board) and check_rows(board) and check_colors(board):
+        return True
+    return False
 
 
 if __name__ == '__main__':
