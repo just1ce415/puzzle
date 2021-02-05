@@ -72,7 +72,21 @@ def check_colors(board: list) -> bool:
  "  2  ****"])
     True
     '''
-    pass
+    # CHECKING SUB-BOARDS 5X5 WITH COLOR BLOCK INVOLVED
+    start_row = 4
+    start_col = 0
+    # ACTUALLY, THERE 5 SQUARES 5X5
+    for _ in range(5):
+        # FORMAING NESTED SUB-BOARD
+        nest_board = board[start_row:start_row+5]
+        for i in range(len(nest_board)):
+            nest_board[i] = nest_board[start_col: start_col+5]
+        # WE SHOULD CHECK BOTH COLOMNS AND ROWS TO COVER THE COLOR BLOCK
+        if not check_rows(nest_board) or not check_colomns(nest_board):
+            return False
+        start_row -= 1
+        start_col += 1
+    return True
 
 
 def validate_board(board: list) -> bool:
