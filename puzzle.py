@@ -17,7 +17,18 @@ def check_rows(board: list) -> bool:
  "  2  ****"])
     True
     '''
-    pass
+    for line in board:
+        for i in range(1, 10):
+            # ALL THE POSSIBLE DIGITS: RANGE 1-9
+            for j in range(9):
+                # USING COUNTER TO TRACK REPETITONS
+                counter = 0
+                if line[j].isdigit():
+                    if int(line[j]) == i:
+                        counter += 1
+                if counter > 1:
+                    return False
+    return True
 
 
 def check_colomns(board: list) -> bool:
@@ -34,7 +45,17 @@ def check_colomns(board: list) -> bool:
  "  2  ****"])
     False
     '''
-    pass
+    # THE SAME AS PREVIOUS FUNC, HOWEVER, IT GOES THROUGH COLOMNS
+    for k in range(9):
+        for i in range(1, 10):
+            for j in range(9):
+                counter = 0
+                if board[j][k].isdigit():
+                    if int(board[j][k]) == i:
+                        counter += 1
+                if counter > 1:
+                    return False
+    return True
 
 
 def check_colors(board: list) -> bool:
