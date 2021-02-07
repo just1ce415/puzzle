@@ -3,6 +3,20 @@ Main module
 GitHub: https://github.com/just1ce415/puzzle.git
 """
 
+def check_repetition(line:str) -> bool:
+    '''
+    Checking if digits don't repeat in the line of the game board.
+    >>> check_repetition('* 411****')
+    False
+    >>> check_repetition('* 4 1****')
+    True
+    '''
+    line = line.replace(' ', '').replace('*', '')
+    if len(line) != len(set(line)):
+        return False
+    return True
+
+
 def check_range(board:list) -> bool:
     '''
     Checking if all the numbers on the board are in range from 1 to 9.
@@ -40,10 +54,7 @@ def check_rows(board: list) -> bool:
     True
     '''
     for line in board:
-        raw_line = line.replace('*', '')
-        raw_line = raw_line.replace(' ', '')
-        set_line = set(raw_line)
-        if len(set_line) != len(raw_line):
+        if not check_repetition(line):
             return False
     return True
 
@@ -62,16 +73,12 @@ def check_colomns(board: list) -> bool:
  "  2  ****"])
     False
     '''
-    # THE SAME AS PREVIOUS FUNC, HOWEVER, IT GOES THROUGH COLOMNS
-    for k in range(len(board)):
-        for i in range(1, 9):
-            counter = 0
-            for j in range(len(board)):
-                if board[j][k].isdigit():
-                    if int(board[j][k]) == i:
-                        counter += 1
-                if counter > 1:
-                    return False
+    for i in range(9):
+        str_tocheck = []
+        for j in range(9):
+            str_tocheck.append(board[j][i])
+        if not check_repetition(''.join(str_tocheck)):
+            return False
     return True
 
 
@@ -92,7 +99,7 @@ def check_colors(board: list) -> bool:
     # START INDICES OF ROW AND COLOMN TO INSPECT
     start_row = 4
     start_col = 0
-    for k in range(5):
+    for _ in range(5):
         # STRING TO CHECK FOR REPETITIONS
         str_tocheck = []
         # ADD DIGITS FROM COLOMNS
@@ -101,10 +108,7 @@ def check_colors(board: list) -> bool:
         # ADD DIGITS FROM ROWS
         for i in range(start_col, start_col+5):
             str_tocheck.append(board[start_row+4][i])
-        # CHECKING VIA SETS
-        str_tocheck = ''.join(str_tocheck)
-        str_tocheck = str_tocheck.replace(' ', '')
-        if len(str_tocheck) != len(set(str_tocheck)):
+        if not check_repetition(''.join(str_tocheck)):
             return False
         start_row -= 1
         start_col += 1
