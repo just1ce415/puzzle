@@ -107,6 +107,8 @@ def check_colors(board: list) -> bool:
             str_tocheck.append(board[i][start_col])
         # ADD DIGITS FROM ROWS
         for i in range(start_col, start_col+5):
+            if i == start_col:
+                continue
             str_tocheck.append(board[start_row+4][i])
         if not check_repetition(''.join(str_tocheck)):
             return False
@@ -134,12 +136,12 @@ def validate_board(board: list) -> bool:
  "*** 2****",\
  "**  3****",\
  "*   4****",\
- "    56781",\
+ "    56789",\
  "        *",\
  "2      **",\
  "      ***",\
  "3 4  ****"])
-    False
+    True
     '''
     if check_colomns(board) and check_rows(board) and check_colors(board) and check_range(board):
         return True
