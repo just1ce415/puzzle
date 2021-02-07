@@ -78,8 +78,6 @@ def check_colomns(board: list) -> bool:
 def check_colors(board: list) -> bool:
     '''
     Checking if there's no repititons in blocks of colors. Returns True - no repetitions.
-    However, it the result of this function may intersect with a result of others. This
-    functions just guaranties that all the rules regarding color blockes are sticked to.
     >>> check_colors(["**** ****",\
  "***1 ****",\
  "**  3****",\
@@ -89,19 +87,24 @@ def check_colors(board: list) -> bool:
  "3   1  **",\
  "  8  2***",\
  "  2  ****"])
-    False
+    True
     '''
-    # CHECKING SUB-BOARDS 5X5 WITH COLOR BLOCK INVOLVED
+    # START INDICES OF ROW AND COLOMN TO INSPECT
     start_row = 4
     start_col = 0
-    # ACTUALLY, THERE 5 SQUARES 5X5
-    for _ in range(5):
-        # FORMAING NESTED SUB-BOARD
-        nest_board = board[start_row:start_row+5]
-        for i in range(len(nest_board)):
-            nest_board[i] = str(nest_board[start_col: start_col+5])
-        # WE SHOULD CHECK BOTH COLOMNS AND ROWS TO COVER THE COLOR BLOCK
-        if not check_rows(nest_board) or not check_colomns(nest_board):
+    for k in range(5):
+        # STRING TO CHECK FOR REPETITIONS
+        str_tocheck = []
+        # ADD DIGITS FROM COLOMNS
+        for i in range(start_row, start_row+5):
+            str_tocheck.append(board[i][start_col])
+        # ADD DIGITS FROM ROWS
+        for i in range(start_col, start_col+5):
+            str_tocheck.append(board[start_row+4][i])
+        # CHECKING VIA SETS
+        str_tocheck = ''.join(str_tocheck)
+        str_tocheck = str_tocheck.replace(' ', '')
+        if len(str_tocheck) != len(set(str_tocheck)):
             return False
         start_row -= 1
         start_col += 1
@@ -123,8 +126,18 @@ def validate_board(board: list) -> bool:
  "  8  2***",\
  "  2  ****"])
     False
+    >>> validate_board(["****1****",\
+ "*** 2****",\
+ "**  3****",\
+ "*   4****",\
+ "    56781",\
+ "        *",\
+ "2      **",\
+ "      ***",\
+ "3 4  ****"])
+    False
     '''
-    if check_colomns(board) and check_rows(board) and check_colors(board):
+    if check_colomns(board) and check_rows(board) and check_colors(board) and check_range(board):
         return True
     return False
 
