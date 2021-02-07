@@ -3,6 +3,28 @@ Main module
 GitHub: https://github.com/just1ce415/puzzle.git
 """
 
+def check_range(board:list) -> bool:
+    '''
+    Checking if all the numbers on the board are in range from 1 to 9.
+    >>> check_rows(["**** ****",\
+ "***1 ****",\
+ "**  3****",\
+ "* 4 1****",\
+ "     9 5 ",\
+ " 6  83  *",\
+ "3   1  **",\
+ "  8  2***",\
+ "  2  ****"])
+    True
+    '''
+    for line in board:
+        for i in range(len(line)):
+            if line[i].isdigit():
+                if int(line[i]) not in range(1, 10):
+                    return False
+    return True
+
+
 def check_rows(board: list) -> bool:
     '''
     Checking if there's no repititons in rows. Returns True - no repetitions.
@@ -18,16 +40,11 @@ def check_rows(board: list) -> bool:
     True
     '''
     for line in board:
-        for i in range(1, 9):
-            counter = 0
-            # ALL THE POSSIBLE DIGITS: RANGE 1-9
-            for j in range(len(line)):
-                # USING COUNTER TO TRACK REPETITONS
-                if line[j].isdigit():
-                    if int(line[j]) == i:
-                        counter += 1
-                if counter > 1:
-                    return False
+        raw_line = line.replace('*', '')
+        raw_line = raw_line.replace(' ', '')
+        set_line = set(raw_line)
+        if len(set_line) != len(raw_line):
+            return False
     return True
 
 
